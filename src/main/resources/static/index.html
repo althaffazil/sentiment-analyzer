@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>AI Sentiment Analyzer</title>
+
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 700px;
+            margin: 50px auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 42px;
+            margin-bottom: 30px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 150px;
+            padding: 12px;
+            font-size: 18px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 12px 30px;
+            font-size: 18px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            background-color: #333;
+            color: white;
+        }
+
+        button:hover {
+            background-color: #555;
+        }
+
+        #result {
+            margin-top: 35px;
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+        .positive {
+            color: green;
+        }
+
+        .negative {
+            color: red;
+        }
+
+        .neutral {
+            color: gray;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<h1>AI Sentiment Analysis</h1>
+
+<textarea
+        id="textInput"
+        placeholder="Enter text here..."
+></textarea>
+
+<br>
+
+<button onclick="analyzeSentiment()">
+    Analyze Sentiment
+</button>
+
+<div id="result"></div>
+
+<script>
+
+async function analyzeSentiment() {
+
+    const text =
+        document.getElementById("textInput").value;
+
+    const resultDiv =
+        document.getElementById("result");
+
+    const response = await fetch(
+        "/api/analyze",
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                text: text
+            })
+        }
+    );
+
+    const data = await response.json();
+
+    if (data.error) {
+
+        resultDiv.className = "negative";
+
+        resultDiv.innerHTML =
+            "⚠️ " + data.error;
+
+        return;
+    }
+
+    let sentiment = data.sentiment;
+
+    let emoji = "😐";
+    let className = "neutral";
+
+    if (sentiment.includes("Positive")) {
+        emoji = "😊";
+        className = "positive";
+    }
+
+    if (sentiment.includes("Negative")) {
+        emoji = "😡";
+        className = "negative";
+    }
+
+    resultDiv.className = className;
+
+    resultDiv.innerHTML =
+        emoji + " " + sentiment +
+        "<br><br>Score: " + data.score;
+}
+
+</script>
+
+</body>
+</html>
