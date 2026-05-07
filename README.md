@@ -42,23 +42,21 @@ Stanford CoreNLP Engine
 
 ## Home Screen
 
-```md
+
 ![Home Screen](screenshots/home.png)
-```
+
 
 ## Positive Sentiment Result
 
-```md
+
 ![Positive Result](screenshots/positive-result.png)
-```
+
 
 
 
 ## Negative Sentiment Result
 
-```md
 ![Negative Result](screenshots/negative-result.png)
-```
 
 # API Endpoint
 
